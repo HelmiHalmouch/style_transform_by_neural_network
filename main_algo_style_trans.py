@@ -1,7 +1,8 @@
 '''
 GHANMI Helmi, November 2018
 version: 1.0 
-1-Please create a folder named 'images' and put the input image in this folder 
+1-Please create a folder named 'images' and put the input image in this folder
+the input mage should be have the same size. Beside you can use the algorithme named 'resize image' 
 
 '''
 from __future__ import print_function
