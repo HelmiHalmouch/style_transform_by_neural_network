@@ -248,6 +248,7 @@ imshow(output, title='Output Image')
 
 plt.ioff()
 plt.show()
+plt.savefig('result.png')
 
 
 print('OK OK')
