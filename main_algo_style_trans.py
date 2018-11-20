@@ -67,4 +67,58 @@ imshow(style_img, title='Style Image')
 plt.figure()
 imshow(content_img, title='Content Image')
 
+#The content loss function
+
+""" define a fake backward method that calls the backward method of nn.MSELoss"""
+class ContentLoss(nn.Module):
+
+	# def the constructor method 
+    def __init__(self, target,):
+        super(ContentLoss, self).__init__()
+        self.target = target.detach()
+
+    # def the forward method 
+    def forward(self, input):
+        self.loss = F.mse_loss(input, self.target)
+        return input
+
+#Style Loss
+
+"""For the style loss we define a module that computes the gram produced given the feature maps of the neural networks. """
+def gram_matrix(input):
+    a, b, c, d = input.size()  
+
+    features = input.view(a * b, c * d)  # resise F_XL into \hat F_XL
+
+    G = torch.mm(features, features.t()) 
+    return G.div(a * b * c * d)
+
+class StyleLoss(nn.Module):
+
+    def __init__(self, target_feature):
+        super(StyleLoss, self).__init__()
+        self.target = gram_matrix(target_feature).detach()
+
+    def forward(self, input):
+        G = gram_matrix(input)
+        self.loss = F.mse_loss(G, self.target)
+        return input
+
+
+#Loading the neural network
+cnn = models.vgg19(pretrained=True).features.to(device).eval()
+
+cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
+cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
+
+class Normalization(nn.Module):
+    def __init__(self, mean, std):
+        super(Normalization, self).__init__()
+        self.mean = torch.tensor(mean).view(-1, 1, 1)
+        self.std = torch.tensor(std).view(-1, 1, 1)
+
+    def forward(self, img):
+    	return (img - self.mean) / self.std
+
+print('OK OK')
 # TODO / ADD THE Loading the neural network
