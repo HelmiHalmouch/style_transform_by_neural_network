@@ -35,8 +35,8 @@ def image_loader(image_name):
     return image.to(device, torch.float)
 
 
-style_img = image_loader("images/apple.jpg")
-content_img = image_loader("images/fig.jpg")
+style_img = image_loader("images/messi.jpg") # the reference image 
+content_img = image_loader("images/resized_stade.jpg")    # the input image should be modified its style 
 
 assert style_img.size() == content_img.size(), \
 "You have to to import style and content images of the same size"
@@ -244,12 +244,17 @@ output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normalization_std,
                             content_img, style_img, input_img)
 
 plt.figure()
-imshow(output, title='Output Image')
+#imshow(output, title='Output Image')
 
 plt.ioff()
+#plt.save('detection_reult.png')
+plt.axis('off')
+#number = input('Please entre a number to save the resull with id:')
+#plt.savefig("output_image/result"+str(number)+".png", bbox_inches='tight')
+plt.savefig("output_image/result.png", bbox_inches='tight')
 plt.show()
-plt.savefig('result.png')
 
 
-print('OK OK')
+
+print('OK the processing is finished !!')
 # TODO : optimisation of the code representation 
